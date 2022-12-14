@@ -1,4 +1,4 @@
-import {  Body, Controller,  Get,  Post,  Redirect,  Render,} from '@nestjs/common';
+import {  Body, Controller,  Get,  Param,  Post,  Query,  Redirect,  Render,} from '@nestjs/common';
 import { AppService } from './app.service';
 import db from './db';
 import { MacskaDto } from './macska.dto';
@@ -9,14 +9,26 @@ export class AppController {
 
   @Get()
   @Render('index')
-  async index() {
-    const [ rows ] = await db.execute(
-      'SELECT szem_szin, suly FROM macskak ORDER BY suly DESC'
-      );
+  async index(@Query('szem_szin') szem_szin: string) {
 
-    return {
-      macskak: rows
-    };
+      if (szem_szin != undefined) {
+        const [ rows ] = await db.execute(
+          'SELECT szem_szin, suly FROM macskak WHERE szem_szin = ?',
+          [szem_szin]
+          );
+    
+        return {
+          macskak: rows
+        };
+      }else{
+        const [ rows ] = await db.execute(
+          'SELECT szem_szin, suly FROM macskak ORDER BY suly DESC'
+          );
+
+          return {
+            macskak: rows
+          };
+      }
   }
 
   //uj macska
@@ -25,7 +37,6 @@ export class AppController {
   newMacskaForm(){
     return {};
   }
-
 
   @Post('cats/new')
   @Redirect()
@@ -38,6 +49,4 @@ export class AppController {
       url: '/',
     }
   }
-
-
 }

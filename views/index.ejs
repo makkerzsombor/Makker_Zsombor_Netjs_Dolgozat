@@ -9,8 +9,8 @@
     <script src='main.js'></script>
 </head>
 <body>
-    <form action="get">
-        <input type="text" name="szemSzin">
+    <form method="get">
+        <input type="text" name="szem_szin">
         <input type="submit" value="Keresés">
     </form>
     <table>
@@ -21,12 +21,12 @@
         <!--Forciklus a táblázathoz-->
         <% for (let m of macskak){ %>
             <tr>
-                <th>
+                <td>
                     <%= m.szem_szin %>              
-                </th>
-                <th>
+                </td>
+                <td>
                     <%= m.suly %>
-                </th>
+                </td>
             </tr>
         <% }; %>
     </table>    
